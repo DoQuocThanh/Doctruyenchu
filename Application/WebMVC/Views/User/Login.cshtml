@@ -1,0 +1,168 @@
+﻿@{
+
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Truyện Chữ</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            width: 400px;
+            padding: 40px 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+            .login-container img {
+                width: 100px;
+                height: auto;
+                display: block;
+                margin: 0 auto 20px;
+            }
+
+        .login-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-control {
+            height: 45px;
+            border-radius: 8px;
+        }
+
+            .form-control:focus {
+                box-shadow: 0 0 5px rgba(38, 143, 255, 0.5);
+                border-color: #2575fc;
+            }
+
+        .forgot-password {
+            text-align: right;
+            font-size: 14px;
+        }
+
+            .forgot-password a {
+                color: #2575fc;
+                text-decoration: none;
+            }
+
+                .forgot-password a:hover {
+                    text-decoration: underline;
+                }
+
+        .btn-login {
+            background: #2575fc;
+            color: #fff;
+            height: 45px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            transition: background 0.3s;
+        }
+
+            .btn-login:hover {
+                background: #1a5bb6;
+            }
+
+        .social-login {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .social-login span {
+                font-size: 14px;
+                color: #666;
+            }
+
+        .social-icons a {
+            margin: 0 10px;
+            font-size: 18px;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+            .social-icons a:hover {
+                color: #2575fc;
+            }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="https://png.pngtree.com/png-clipart/20230918/original/pngtree-comicstyle-cartoon-book-icon-a-pictogram-illustration-for-education-business-and-png-image_12358666.png" alt="Logo">
+        <h2 class="login-title">Đăng Nhập</h2>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Nhập email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" required>
+            </div>
+            <div class="forgot-password">
+                <a href="#">Quên mật khẩu?</a>
+            </div>
+            <button type="submit" class="btn btn-login w-100 mt-4">Đăng Nhập</button>
+        </form>
+        <div class="social-login">
+            <span>Hoặc đăng nhập với</span>
+            <div class="social-icons mt-2">
+                <a href="#" title="Google"><i class="bi bi-google"></i></a>
+                <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" title="Twitter"><i class="bi bi-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        $(document).ready(function () {
+            $("#loginForm").on("submit", function (e) {
+                e.preventDefault(); // Ngăn chặn submit mặc định
+                const email = $("#email").val();
+                const password = $("#password").val();
+
+                if (!email || !password) {
+                    alert("Vui lòng điền đầy đủ thông tin.");
+                    return;
+                }
+
+                // Xử lý dữ liệu
+                alert(`Đăng nhập thành công với email: ${email}`);
+            });
+        });
+    </script>
+</body>
+</html>
+
