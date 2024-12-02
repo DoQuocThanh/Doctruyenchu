@@ -4,7 +4,7 @@ namespace WebMVC.Interfaces
 {
     public interface IUserService
     {
-        Task<LoginViewModel> LoginUser(LoginViewModel loginViewModel); 
+        Task<string> LoginUser(LoginViewModel loginViewModel); 
 
     }
 }

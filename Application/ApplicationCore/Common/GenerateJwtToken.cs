@@ -8,8 +8,5 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Common
 {
-    public class GenerateJwtToken
-    {
-        
-    }
+
 }
