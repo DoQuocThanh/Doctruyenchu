@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebMVC.Common;
 using WebMVC.Interfaces;
 using WebMVC.Models;
@@ -54,6 +55,51 @@ namespace WebMVC.Controllers
             }
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(registerViewModel);
+            }
+
+            try
+            {
+                await _userService.RegisterUser(registerViewModel);
+                TempData["Message"] = "Đăng ký thành công! Hãy đăng nhập.";
+                return RedirectToAction("Login", "User");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(registerViewModel);
+            }
+        }
+
+        public IActionResult Logout()
+        {
+            // Xoá cookie chứa token
+            Response.Cookies.Delete("JwtToken");
+
+            // Chuyển hướng về trang đăng nhập hoặc trang chủ
+            return RedirectToAction("Login", "User");
+        }
+
+
+        //Profile
+        [CustomAuthorize]
+        public async Task<IActionResult> Profile()
+        {
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var profileView = await _userService.GetInformationProfile(Int32.Parse(userId));
+            return View(profileView);
+        }
 
     }
 }

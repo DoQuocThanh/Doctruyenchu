@@ -16,5 +16,14 @@ namespace ApplicationCore.Specifications
                 .Where(b => b.Email == email);
                 
         }
+
+        public UserWithItemsSpecification(int userId)
+        {
+            Query
+                .Where(b => b.Id == userId).Include(b => b.Stories);
+
+        }
+
+
     }
 }

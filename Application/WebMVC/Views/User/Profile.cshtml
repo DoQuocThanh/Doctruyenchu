@@ -1,0 +1,119 @@
+﻿@model ProfileViewModel
+@{
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Tác Giả</title>
+
+    <!-- Preconnect for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/assets/bootstrap.min.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://suustore.com/assets/frontend/images/favicon.ico" type="image/x-icon">
+
+    <!-- Custom App CSS -->
+    <link rel="stylesheet" href="~/assets/app.css">
+
+    <!-- Bootstrap Icons for better visuals -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-roboto">
+
+    <!-- Header -->
+    <header class="bg-primary text-white py-4">
+        <div class="container mx-auto px-4">
+            <h1 class="text-2xl font-bold">Hồ Sơ Tác Giả</h1>
+        </div>
+    </header>
+
+    <!-- Profile Section -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row items-center bg-white shadow-lg rounded-lg p-6">
+            <!-- Avatar -->
+            <div class="w-32 h-32 mb-4 md:mb-0 md:mr-6">
+                <img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg" alt="Avatar" class="w-full h-full rounded-full object-cover">
+            </div>
+            <!-- Info -->
+            <div>
+                <h2 class="text-2xl font-semibold text-title mb-2">@Model.Name</h2>
+                <p class="text-gray-600">Email: @Model.Email</p>
+                <p class="text-gray-600">Tổng số truyện: <span class="font-semibold">@Model.NumberStoriesWritten</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stories Section -->
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-xl font-bold mb-4">Danh Sách Truyện</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach (var story in Model.Stories)
+            {
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+                    <img src="@story.CoverImage" alt="Story Cover" class="w-full h-48 object-cover transition-transform transform hover:scale-105">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            <a href="/truyen/@story.Title" class="hover:text-primary text-xl font-bold">@story.Title</a>
+                        </h3>
+
+                        <!-- Hiển thị thể loại -->
+                        <p class="text-sm text-gray-600 mb-3">
+                            <span class="font-medium">Thể loại: </span>
+                            @if (story.Genres != null && story.Genres.Any())
+                            {
+                                @foreach (var genre in story.Genres)
+                                {
+                                    <span class="text-dark-500 font-semibold">@genre.GenreName</span>
+                                    @* Hiển thị tên thể loại *@
+                                    @if (!Equals(genre, story.Genres.Last()))
+                                    {
+                                        @:,@* Thêm dấu phẩy sau mỗi thể loại, trừ thể loại cuối *@
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-red-500">Chưa có thể loại</span>
+                            }
+                        </p>
+
+                        <!-- Tình trạng truyện -->
+                        <p class="text-sm text-gray-600 mb-4">
+                            <span class="font-medium">Tình trạng: </span>
+                            @if (story.Status == "Còn tiếp")
+                            {
+                                <span class="text-green-500 font-semibold">Còn tiếp</span>
+                                <!-- Nút viết tiếp -->
+                                <a asp-controller="Story" asp-action="WriteStory" asp-route-id="@story.StoryId"
+                                   class="btn btn-outline-primary mt-2 w-full block text-center text-white bg-primary hover:bg-primary-dark transition-all duration-300">Viết tiếp</a>
+                            }
+                            else
+                            {
+                                <span class="text-red-500 font-semibold">Hoàn thành</span>
+                            }
+                        </p>
+
+                        <!-- Ngày tạo -->
+                        <p class="text-sm text-gray-500">Ngày tạo: @story.CreatedAt.ToShortDateString()</p>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+
+</body>
+</html>

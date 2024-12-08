@@ -34,7 +34,7 @@
         <!-- place navbar here -->
         <nav class="navbar navbar-expand-lg navbar-dark header__navbar p-md-0">
             <div class="container">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
                     <img src="~/assets/images/logo_text.png" alt="Logo Suu Truyen" srcset="" class="img-fluid"
                          style="width: 200px;">
                 </a>
@@ -104,38 +104,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                                Theo số chương
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-custom">
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        Dưới
-                                        100
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        100
-                                        - 500
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        500
-                                        - 1000
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        Trên
-                                        1000
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
 
                     <div class="form-check form-switch me-3 d-flex align-items-center">
@@ -182,9 +150,34 @@
 
                         </button>
                     </form>
+                </div> 
+                <div class="user-section ms-3 d-flex align-items-center">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <div class="dropdown">
+                            <a class="d-flex align-items-center dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false" style="text-decoration: none;">
+                                <img src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg"
+                            alt="Avatar"
+                            class="rounded-circle me-2"
+                            style="width: 40px; height: 40px; object-fit: cover;">
+                                <span class="text-white">@User.Identity.Name</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="Profile">Thông tin cá nhân</a></li>
+                                <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-controller="User" asp-action="Login" class="btn btn-outline-light">Đăng nhập</a>
+                    }
                 </div>
             </div>
+
         </nav>
+
     </header>
 
     <div class="bg-light header-bottom">
@@ -226,145 +219,37 @@
             @RenderBody()
         </main>
     </div>
-    <div id="footer" class="footer border-top pt-2">
+    <div id="footer" class="footer border-top pt-4 bg-dark text-light">
         <div class="container">
             <div class="row">
-                <div class="col-12 col-md-5">
-                    <strong>Suu Truyện</strong> - <a title="Đọc truyện online" class="text-dark text-decoration-none"
-                                                     href="#">Đọc truyện</a> online một cách nhanh nhất. Hỗ trợ mọi thiết bị như
-                    di
-                    động và máy tính bảng.
-                </div>
-                <ul class="col-12 col-md-7 list-unstyled d-flex flex-wrap list-tag">
-                    <li class="me-1">
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="đam mỹ hài">
-                                đam mỹ
-                                hài
-                            </a>
-                        </span>
-                    </li>
-                    <li>
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="truyện xuyên nhanh">
-                                truyện
-                                xuyên
-                                nhanh
-                            </a>
-                        </span>
-                    </li>
-                    <li class="me-1">
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="đam mỹ hài">
-                                đam mỹ
-                                hài
-                            </a>
-                        </span>
-                    </li>
-                    <li>
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="truyện xuyên nhanh">
-                                truyện
-                                xuyên
-                                nhanh
-                            </a>
-                        </span>
-                    </li>
-                    <li class="me-1">
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="đam mỹ hài">
-                                đam mỹ
-                                hài
-                            </a>
-                        </span>
-                    </li>
-                    <li>
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="truyện xuyên nhanh">
-                                truyện
-                                xuyên
-                                nhanh
-                            </a>
-                        </span>
-                    </li>
-                    <li class="me-1">
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="đam mỹ hài">
-                                đam mỹ
-                                hài
-                            </a>
-                        </span>
-                    </li>
-                    <li>
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="truyện xuyên nhanh">
-                                truyện
-                                xuyên
-                                nhanh
-                            </a>
-                        </span>
-                    </li>
-                    <li class="me-1">
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="đam mỹ hài">
-                                đam mỹ
-                                hài
-                            </a>
-                        </span>
-                    </li>
-                    <li>
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="truyện xuyên nhanh">
-                                truyện
-                                xuyên
-                                nhanh
-                            </a>
-                        </span>
-                    </li>
-                    <li class="me-1">
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="đam mỹ hài">
-                                đam mỹ
-                                hài
-                            </a>
-                        </span>
-                    </li>
-                    <li>
-                        <span class="badge text-bg-light">
-                            <a class="text-dark text-decoration-none"
-                               href="#" title="truyện xuyên nhanh">
-                                truyện
-                                xuyên
-                                nhanh
-                            </a>
-                        </span>
-                    </li>
-                </ul>
-
-                <div class="col-12">
-                    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-                        <img alt="Creative Commons License" style="border-width:0;margin-bottom: 10px"
-                             src="~/assets/images/88x31.png">
-                    </a><br>
-                    <p>
-                        Website hoạt động dưới Giấy phép truy cập mở <a rel="license"
-                                                                        class="text-decoration-none text-dark hover-title"
-                                                                        href="http://creativecommons.org/licenses/by/4.0/">
-                            Creative Commons Attribution 4.0
-                            International License
-                        </a>
+                <!-- Logo và mô tả -->
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <h5 class="fw-bold">Suu Truyện</h5>
+                    <p class="mb-1">
+                        <a title="Đọc truyện online" class="text-light text-decoration-none" href="#">Đọc truyện</a> online nhanh chóng, hỗ trợ mọi thiết bị.
                     </p>
+                </div>
+
+                <!-- Giấy phép -->
+                <div class="col-md-6 text-center text-md-end">
+                    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+                        <img alt="Creative Commons License" class="img-fluid mb-2"
+                             src="~/assets/images/88x31.png" style="width: 100px;">
+                    </a>
+                    <p class="mb-0">
+                        Website hoạt động theo
+                        <a rel="license" class="text-light text-decoration-underline"
+                           href="http://creativecommons.org/licenses/by/4.0/">
+                            Creative Commons Attribution 4.0
+                        </a>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer nhỏ bên dưới -->
+            <div class="row border-top mt-4 pt-3">
+                <div class="col-12 text-center">
+                    <small>&copy; 2024 Suu Truyện. Tất cả quyền được bảo lưu.</small>
                 </div>
             </div>
         </div>

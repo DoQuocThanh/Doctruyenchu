@@ -11,13 +11,13 @@ namespace ApplicationCore.Entities
     public class Story : IAggregateRoot
     {
         public int Id { get; set; }
-        public int UserId { get; set; } // Liên kết tới User
+        public int UserId { get; set; } 
         public string Title { get; set; }
         public string Author { get; set; }
         public string Description { get; set; }
         public string CoverImage { get; set; }
         public string Status { get; set; }
-        public string Genre { get; set; } // Thể loại lưu dạng text id
+        public string Genre { get; set; } 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 

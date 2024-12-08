@@ -1,5 +1,4 @@
 ﻿@{
-
     Layout = null;
 }
 <!DOCTYPE html>
@@ -7,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Truyện Chữ</title>
+    <title>Đăng Ký - Truyện Chữ</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -60,21 +59,7 @@
                 border-color: #2575fc;
             }
 
-        .forgot-password {
-            text-align: right;
-            font-size: 14px;
-        }
-
-            .forgot-password a {
-                color: #2575fc;
-                text-decoration: none;
-            }
-
-                .forgot-password a:hover {
-                    text-decoration: underline;
-                }
-
-        .btn-login {
+        .btn-register {
             background: #2575fc;
             color: #fff;
             height: 45px;
@@ -85,7 +70,7 @@
             transition: background 0.3s;
         }
 
-            .btn-login:hover {
+            .btn-register:hover {
                 background: #1a5bb6;
             }
 
@@ -112,37 +97,14 @@
     </style>
 </head>
 <body>
- 
-
-
     <div class="login-container">
         <img src="https://png.pngtree.com/png-clipart/20230918/original/pngtree-comicstyle-cartoon-book-icon-a-pictogram-illustration-for-education-business-and-png-image_12358666.png" alt="Logo">
-
-        <h2 class="login-title">Đăng Nhập</h2>
-
-        @if (TempData["Message"] != null)
-        {
-            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header bg-success text-white">
-                            <h5 class="modal-title" id="successModalLabel">Thông Báo</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            @TempData["Message"]
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
-                        </div>
-                    </div>
-                </div>
+        <h2 class="login-title">Đăng Ký</h2>
+        <form id="registerForm" method="post" asp-controller="User" asp-action="Register">
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên người dùng</label>
+                <input type="text" name="Username" class="form-control" id="username" placeholder="Nhập tên người dùng" required>
             </div>
-        }
-
-       
-
-        <form id="loginForm" method="post" asp-controller="User" asp-action="Login">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" name="Email" class="form-control" id="email" placeholder="Nhập email" required>
@@ -151,29 +113,20 @@
                 <label for="password" class="form-label">Mật khẩu</label>
                 <input type="password" name="Password" class="form-control" id="password" placeholder="Nhập mật khẩu" required>
             </div>
-            <div class="forgot-password">
-                <a href="#">Quên mật khẩu?</a>
+            <div class="mb-3">
+                <label for="repassword" class="form-label">Nhập lại mật khẩu</label>
+                <input type="password" name="RePassword" class="form-control" id="repassword" placeholder="Nhập lại mật khẩu" required>
             </div>
-            <button type="submit" class="btn btn-login w-100 mt-4">Đăng Nhập</button>
-
+            <button type="submit" class="btn btn-register w-100 mt-4">Đăng Ký</button>
         </form>
-
         <div class="text-center mt-3">
-            <span>Bạn chưa có tài khoản?</span>
-            <a asp-controller="User" asp-action="Register" class="btn btn-outline-primary mt-2 w-100">Đăng Ký</a>
+            <span>Nếu đã có tài khoản hãy đăng nhập</span>
+            <a asp-controller="User" asp-action="Login" class="btn btn-outline-primary mt-2 w-100">Đăng Nhập</a>
         </div>
 
-        <div class="social-login">
-            <span>Hoặc đăng nhập với</span>
-            <div class="social-icons mt-2">
-                
-                <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" title="Twitter"><i class="bi bi-twitter"></i></a>
-            </div>
-        </div>
         @if (ViewData.ModelState.ErrorCount > 0)
         {
-            <div class="alert alert-danger">
+            <div class="alert alert-danger mt-3">
                 <ul class="mb-0">
                     @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
                     {
@@ -184,21 +137,11 @@
         }
     </div>
 
-   
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            if ($('#successModal').length) {
-                $('#successModal').modal('show');
-            }
-        });
-    </script>
 </body>
 </html>
-

@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<GenerateJwtToken>();
+builder.Services.AddScoped<ImportService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 // Add Service to the service 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -36,7 +37,7 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["SecretKey"];
 var issuer = jwtSettings["Issuer"];
 var audience = jwtSettings["Audience"];
-var expireInDays = int.Parse(jwtSettings["ExpiryInDays"]);
+var expireInDays = int.Parse(jwtSettings["ExpireInDays"]);
 
 // Cấu hình JWT Authentication
 builder.Services.AddAuthentication(options =>
@@ -89,10 +90,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication(); // Xác thực JWT
+app.UseAuthorization();  // Ủy quyền dựa trên roles/policies
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=User}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
