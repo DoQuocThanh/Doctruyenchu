@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using Humanizer.Localisation;
 using System.Text.Json;
 using WebMVC.Common;
 
@@ -14,6 +15,7 @@ namespace WebMVC.Services
         public string Genre { get; set; } // "Khoa Huyễn, Điềm Đạm, Thời Không Xuyên Toa"
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int View { get; set; }
         public ICollection<ChapterJson> Chapters { get; set; }
     }
 
@@ -39,22 +41,32 @@ namespace WebMVC.Services
         {
             // 1. Đọc JSON từ file
             var jsonData = File.ReadAllText(jsonFilePath);
-            var storyJson = JsonSerializer.Deserialize<StoryJson>(jsonData);
+            var listStory = JsonSerializer.Deserialize<List<StoryJson>>(jsonData);
 
-            if (storyJson == null) throw new Exception("Không có dữ liệu JSON hợp lệ!");
+            foreach (var storyJson in listStory)
+            {
+                if (storyJson == null) throw new Exception("Không có dữ liệu JSON hợp lệ!");
 
-           
-            
                 // 2. Lưu các thể loại (Genre)
                 var genreNames = storyJson.Genre.Split(',').Select(g => g.Trim()).ToList();
                 var genreIds = new List<int>();
 
                 foreach (var genreName in genreNames)
                 {
-                    var genre = new Genre { Name = genreName };
-                    await _genreRepository.AddAsync(genre);
-                    await _genreRepository.SaveChangesAsync(); // Lưu để lấy Id
-                    genreIds.Add(genre.Id);
+                    var listGenre = await _genreRepository.ListAsync();
+                    var checkGenre = listGenre.FirstOrDefault(x => x.Name == genreName);
+                    if (!(checkGenre != null))
+                    {
+                        var genre = new Genre { Name = genreName };
+
+                        await _genreRepository.AddAsync(genre);
+                        await _genreRepository.SaveChangesAsync(); // Lưu để lấy Id
+                        genreIds.Add(genre.Id);
+                    }
+                    else {
+                        genreIds.Add(checkGenre.Id);
+                    }
+
                 }
 
                 // 3. Lưu Story
@@ -69,11 +81,12 @@ namespace WebMVC.Services
                     CreatedAt = storyJson.CreatedAt,
                     UserId = userId,
                     UpdatedAt = null,
-                    Chapters = new List<Chapter>() // Sẽ thêm sau
+                    Chapters = new List<Chapter>(), 
+                    View = storyJson.View,
                 };
 
-               await _storyRepository.AddAsync(story);
-               await _storyRepository.SaveChangesAsync();
+                await _storyRepository.AddAsync(story);
+                await _storyRepository.SaveChangesAsync();
 
                 // 4. Lưu Chapter liên kết với Story
                 foreach (var chapterJson in storyJson.Chapters)
@@ -90,8 +103,10 @@ namespace WebMVC.Services
                     await _chapterRepository.AddAsync(chapter);
                 }
 
-               await _chapterRepository.SaveChangesAsync();
+                await _chapterRepository.SaveChangesAsync();
             }
+        }
+           
         
 
 

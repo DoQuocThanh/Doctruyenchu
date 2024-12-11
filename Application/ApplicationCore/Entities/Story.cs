@@ -20,7 +20,7 @@ namespace ApplicationCore.Entities
         public string Genre { get; set; } 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-
+        public int View { get; set; }
         public User User { get; set; }
         public ICollection<Chapter> Chapters { get; set; }
         public ICollection<Comment> Comments { get; set; }

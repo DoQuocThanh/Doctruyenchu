@@ -268,7 +268,135 @@ $(document).ready(function () {
             $('#sendMessage').click();
         }
     });
+
+    
 });
+
+$(document).ready(function () {
+    // Hàm tạo màu sắc ngẫu nhiên theo HSL (Hue, Saturation, Lightness)
+    function generateRandomColor(id) {
+        const hue = (id * 137) % 360;  // Nhân với một số để tạo ra sự khác biệt
+        const saturation = 90 + (id % 10);  // Độ bão hòa (Saturation)
+        const lightness = 30 + (id % 10);  // Độ sáng (Lightness)
+
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
+
+    // Áp dụng màu cho các liên kết dựa trên @genre.Id
+    $('.unique-category-name').each(function () {
+        const genreId = $(this).data('genre-id');  // Lấy ID của genre từ thuộc tính data
+        const color = generateRandomColor(genreId);  // Tạo màu cho mỗi genreId
+        $(this).css('color', color);  // Áp dụng màu cho phần tử
+    });
+});
+$(document).ready(function () {
+    // Mảng lưu các thể loại đã chọn
+    let selectedGenres = [];
+
+    // Hàm tạo màu sắc ngẫu nhiên cho mỗi thể loại
+    function generateRandomColor(id) {
+        const hue = (id * 137) % 360;  // Tạo màu sắc ngẫu nhiên cho thể loại
+        const saturation = 90 + (id % 10);
+        const lightness = 30 + (id % 10);
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
+
+    // Hàm cập nhật lại danh sách thể loại đã chọn trong giao diện
+    function updateSelectedGenres() {
+        const selectedContainer = $("#selected-genres");
+        selectedContainer.empty();  // Xóa nội dung cũ
+
+        selectedGenres.forEach(genre => {
+            // Tạo thẻ <a> cho thể loại đã chọn
+            const genreLink = $('<a>')
+                .addClass("dropdown-item random-hover-link text-decoration-none unique-category-name unique-category-name-click")
+                .attr("href", "/Home/IndexFilter?GenresSlected=" + genre.id)
+                .attr("data-genre-id", genre.id)
+                .attr("data-genre-name", genre.name)
+                .text(genre.name);
+
+            // Áp dụng màu sắc cho tên thể loại
+            const color = generateRandomColor(genre.id);
+            genreLink.css('color', color);
+
+            // Tạo nút xóa thể loại
+            const removeBtn = $('<button>')
+                .addClass("btn-close ms-1")
+                .css("font-size", "0.8rem")
+                .on("click", function () {
+                    event.preventDefault();
+                    removeGenre(genre.id);  // Gọi hàm xóa thể loại
+                    updateSelectedGenres();  // Cập nhật lại giao diện
+                    updateHiddenInput();  // Cập nhật giá trị cho hidden input
+                });
+
+            // Thêm nút xóa vào trong thẻ <a>
+            genreLink.append(removeBtn);
+
+            // Thêm thẻ vào trong container
+            selectedContainer.append(genreLink);
+            selectedContainer.append(genreLink);
+        });
+
+        // Cập nhật giá trị cho hidden input
+        updateHiddenInput();
+    }
+
+    // Hàm xử lý khi chọn thể loại
+    function selectGenre(element, genreName) {
+        const genreId = $(element).data("genre-id");
+
+        // Kiểm tra nếu thể loại đã tồn tại trong danh sách thì không thêm nữa
+        if (!selectedGenres.some(genre => genre.id === genreId)) {
+            selectedGenres.push({ id: genreId, name: genreName });
+            updateSelectedGenres();  // Cập nhật lại giao diện
+        }
+    }
+
+    // Hàm cập nhật giá trị cho hidden input
+    function updateHiddenInput() {
+        const selectedGenresIds = selectedGenres.map(genre => genre.id).join(",");  // Tạo chuỗi ID
+        $("#selectedGenresIds").val(selectedGenresIds);  // Cập nhật giá trị cho hidden input
+    }
+
+    // Hàm xóa thể loại khỏi danh sách
+    function removeGenre(genreId) {
+        const index = selectedGenres.findIndex(genre => genre.id === genreId);
+        if (index !== -1) {
+            selectedGenres.splice(index, 1);  // Xóa thể loại khỏi mảng
+        }
+    }
+
+    // Khởi tạo mảng `selectedGenres` từ các thể loại đã chọn có sẵn trong giao diện
+    // Lặp qua tất cả các thể loại đã chọn trong #selected-genres
+    $("#selected-genres a").each(function () {
+        // Lấy genreId và genreName từ data-attributes của thẻ <a>
+        const genreId = $(this).data("genre-id");
+        const genreName = $(this).data("genre-name");
+
+        // Thêm vào mảng selectedGenres
+        selectedGenres.push({ id: genreId, name: genreName });
+    });
+
+    // Lắng nghe sự kiện khi người dùng chọn thể loại từ danh sách
+    $(".unique-category-name-click").on("click", function (event) {
+        event.preventDefault();  // Ngừng hành động mặc định
+        const genreName = $(this).data("genre-name");
+        selectGenre(this, genreName);  // Gọi hàm xử lý chọn thể loại
+    });
+
+    // Nếu bạn có các phần tử thể loại đã có sẵn, có thể gọi updateSelectedGenres ở đây để hiển thị chúng
+    updateSelectedGenres();
+});
+
+
+
+
+
+
+
+
+
 
 
 

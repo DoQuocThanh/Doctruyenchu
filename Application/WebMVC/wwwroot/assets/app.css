@@ -20,7 +20,7 @@ body {
     }
 
 .pagination {
-    justify-content: flex-end;
+    justify-content: center;
     padding: 20px 0
 }
 
@@ -521,36 +521,36 @@ main {
 
 @media (max-width:575px) {
     .section-stories-hot__list {
-        grid-template-columns: repeat(3,1fr)
+        grid-template-columns: repeat(2,1fr)
     }
 }
 
 @media (min-width:576px) {
     .section-stories-hot__list {
-        grid-template-columns: repeat(4,1fr)
+        grid-template-columns: repeat(3,1fr)
     }
 }
 
 @media (min-width:768px) {
     .section-stories-hot__list {
-        grid-template-columns: repeat(4,1fr)
+        grid-template-columns: repeat(3,1fr)
     }
 }
 
 @media (min-width:992px) {
     .section-stories-hot__list {
-        grid-template-columns: repeat(6,1fr)
+        grid-template-columns: repeat(4,1fr)
     }
 }
 
 @media (min-width:1200px) {
     .section-stories-hot__list {
-        grid-template-columns: repeat(8,1fr)
+        grid-template-columns: repeat(5,1fr)
     }
 }
 
 .story-item-full {
-    max-width: 150px;
+    max-width: 250px;
     position: relative
 }
 
@@ -628,7 +628,7 @@ main {
 .story-item-no-image__name {
     border-right: 1px dashed #ccc;
     padding: 10px 0;
-    width: 50%
+    width: 60%
 }
 
     .story-item-no-image__name i {
@@ -644,12 +644,7 @@ main {
 .story-item-no-image__categories {
     border-right: 1px dashed #ccc;
     padding: 10px 0;
-    width: 35%
-}
-
-.story-item-no-image__chapters {
-    padding: 10px 0;
-    width: 15%
+    width: 40%
 }
 
 @media (max-width:992px) {
@@ -664,7 +659,7 @@ main {
 }
 
 .story-item {
-    max-width: 150px
+    max-width: 250px
 }
 
     .story-item:hover img {
@@ -694,7 +689,7 @@ main {
     bottom: 0;
     color: #f4f4f4;
     display: block;
-    font-size: .75rem;
+    font-size: 0.9rem;
     font-weight: 600;
     margin: 2px 0 0;
     padding: 5px;
@@ -1083,3 +1078,13 @@ main {
         .chat-box .close-chat-btn:hover {
             color: #ff0000;
         }
+
+/* Tạo hiệu ứng lấp lánh với pseudo-element */
+
+
+
+/* Search story*/
+.search-list-story {
+    padding: 13px;
+}
+

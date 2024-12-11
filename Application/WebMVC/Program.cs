@@ -17,6 +17,7 @@ builder.Services.AddScoped<ImportService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 // Add Service to the service 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IIndexService, IndexService>();
 
 // Đảm bảo IConfiguration đã có sẵn
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
@@ -95,6 +96,6 @@ app.UseAuthorization();  // Ủy quyền dựa trên roles/policies
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=IndexFilter}/{id?}");
 
 app.Run();

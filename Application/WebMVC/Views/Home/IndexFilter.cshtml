@@ -1,0 +1,183 @@
+﻿@model IndexFilterViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+@using System.Linq
+
+
+<div class="section-stories-hot mb-3">
+    <div class="container">
+
+        <div class="row search-list-story">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+
+                    <div class="dropdown">
+                        <!-- Nút dropdown (không dùng <a> nữa) -->
+                        <h3 class="d-block text-decoration-none nav-link dropdown-toggle story-name"
+                                title="Truyện Hot" role="button" id="dropdownMenuLink"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            Thể loại
+                        </h3>
+
+                        <!-- Vùng hiển thị các thể loại đã chọn -->
+                        <!-- Thể loại đã chọn -->
+                        <div id="selected-genres" class="d-inline-block ms-3 mb-3">
+                            @if (!string.IsNullOrEmpty(ViewBag.Filter?.GenresSlected))
+                            {
+                                var selectedGenreIds = ViewBag.Filter?.GenresSlected.Split(',');
+
+                                foreach (var genreId in selectedGenreIds)
+                                {
+                                    var genre = Model.Genres.FirstOrDefault(g => g.Id.ToString() == genreId);
+
+                                    if (genre != null)
+                                    {
+                                        <a href="#" class="dropdown-item random-hover-link text-decoration-none unique-category-name"
+                                           data-genre-id="@genre.Id"
+                                           data-genre-name="@genre.GenreName">
+                                        </a>
+                                        <!-- Nút xóa -->
+                                        
+                                    }
+                                }
+                            }
+                        </div>
+
+                        <!-- Dropdown menu -->
+                        <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuLink">
+                            @foreach (var genre in @Model.Genres)
+                            {
+                                <li>
+                                    <span class="dropdown-item random-hover-link text-decoration-none unique-category-name unique-category-name-click"
+                                       data-genre-id="@genre.Id"
+                                       data-genre-name="@genre.GenreName">
+                                        @genre.GenreName
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+
+            <form class="d-flex header__form-search" asp-controller="Home" asp-action="IndexFilter">
+                <input type="hidden" id="selectedGenresIds" name="GenresSlected" value="@ViewBag.Filter?.GenresSlected" />
+
+                <input class="form-control search-story" type="text" placeholder="Tìm kiếm" name="Title"
+                       value="@ViewBag.Filter?.Title">
+
+                <button class="btn" type="submit" style="margin-right: 5px">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                         viewBox="0 0 512 512">
+                        <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z">
+                        </path>
+                    </svg>
+
+                </button>
+            </form>
+
+        </div>
+
+
+        <div class="row">
+            <div class="head-title-global d-flex justify-content-between mb-2">
+                <div class="col-6 col-md-4 col-lg-4 head-title-global__left d-flex align-items-center">
+                    <h2 class="me-2 mb-0 border-bottom border-secondary pb-1">
+                        <a href="#" class="d-block text-decoration-none text-dark fs-4 story-name"
+                           title="Truyện Hot">Truyện Hot</a>
+                    </h2>
+                    <i class="fa-solid fa-fire-flame-curved"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="section-stories-hot__list">
+                    @foreach (var story in Model.Stories)
+                    {
+                        <div class="story-item">
+                            <a href="story.html" class="d-block text-decoration-none">
+                                <div class="story-item__image">
+                                    <img src="@story.CoverImage" alt="@story.Title" class="img-fluid" width="150"
+                                         height="230" loading="lazy">
+                                </div>
+                                <h3 class="story-item__name text-one-row story-name">@story.Title <br>  <span style="color: orange;">- @story.View -</span></h3>
+
+                                <div class="list-badge">
+                                    
+
+                                    <span class="story-item__badge story-item__badge-hot badge text-bg-danger">Hot</span>
+
+                                    <span class="story-item__badge story-item__badge-new badge text-bg-info text-light">New</span>
+
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="pagination">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <!-- Nút Previous -->
+                    @if (Model.CurrentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-controller="Home"
+                               asp-action="IndexFilter"
+                               asp-route-PageIndex="@(Model.CurrentPage - 1)"
+                               asp-route-PageSize="@(ViewBag.Filter.PageSize)"
+                               asp-route-GenresSlected="@ViewBag.Filter?.GenresSlected"
+                               asp-route-Title="@ViewBag.Filter?.Title">
+                                &laquo;
+                            </a>
+                        </li>
+                    }
+
+                    <!-- Số trang -->
+                    @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link"
+                               asp-controller="Home"
+                               asp-action="IndexFilter"
+                               asp-route-PageIndex="@i"
+                               asp-route-PageSize="@(ViewBag.Filter.PageSize)"
+                               asp-route-GenresSlected="@ViewBag.Filter?.GenresSlected"
+                               asp-route-Title="@ViewBag.Filter?.Title">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    <!-- Nút Next -->
+                    @if (Model.CurrentPage < Model.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-controller="Home"
+                               asp-action="IndexFilter"
+                               asp-route-PageIndex="@(Model.CurrentPage + 1)"
+                               asp-route-PageSize="@(ViewBag.Filter.PageSize)"
+                               asp-route-GenresSlected="@ViewBag.Filter?.GenresSlected"
+                               asp-route-Title="@ViewBag.Filter?.Title">
+                                &raquo;
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+
+
+    </div>
+</div>
+
