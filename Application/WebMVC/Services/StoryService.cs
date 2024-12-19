@@ -22,12 +22,13 @@ namespace WebMVC.Services
             var listGenre = await _genreRepository.ListAsync();
             var listChapter = await _chapterRepository.ListAsync();
             var story = listStory.FirstOrDefault(x => x.Id == id);
+
             var listChapterViewModel = listChapter.Where(x => x.StoryId == story.Id).Select(x => new ChapterViewModel()
             {
                 Content = x.Content,
                 Title = x.Title,
                 Id = x.Id,
-                StoryId = x.Id,
+                StoryId = x.StoryId,
             }).ToList();
 
             // Lấy thông tin phân trang

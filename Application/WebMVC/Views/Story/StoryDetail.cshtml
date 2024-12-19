@@ -96,7 +96,7 @@
                                         @foreach (var chapter in @Model.ChaptersCloumOne)
                                         {
                                             <li>
-                                                <a href="chapter.html"
+                                                <a  asp-action="ChapterDetail" asp-controller="Chapter" asp-route-chapterId="@chapter.Id"  asp-route-storyId="@chapter.StoryId"
                                                    class="text-decoration-none text-dark hover-title">
                                                     @chapter.Title
                                                 </a>
@@ -111,12 +111,12 @@
 
                                         @foreach (var chapter in @Model.ChaptersCloumTwo)
                                         {
-                                            <li>
-                                                <a href="chapter.html"
-                                                   class="text-decoration-none text-dark hover-title">
+                                                <li>
+                                                    <a  asp-action="ChapterDetail" asp-controller="Chapter" asp-route-chapterId="@chapter.Id"  asp-route-storyId="@chapter.StoryId"
+                                                       class="text-decoration-none text-dark hover-title">
                                                     @chapter.Title
-                                                </a>
-                                            </li>
+                                                    </a>
+                                                </li>
 
                                         }
                                     </ul>

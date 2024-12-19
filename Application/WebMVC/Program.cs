@@ -3,6 +3,7 @@ using ApplicationInfrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 using WebMVC.Common;
 using WebMVC.Interfaces;
@@ -19,6 +20,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IIndexService, IndexService>();
 builder.Services.AddScoped<IStoryService, StoryService>();
+builder.Services.AddScoped<IChapterService, ChapterService>();
 
 // Đảm bảo IConfiguration đã có sẵn
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
@@ -71,7 +73,8 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
         ValidIssuer = issuer,
-        ValidAudience = audience
+        ValidAudience = audience,
+        RoleClaimType = ClaimTypes.Role
     };
 });
 

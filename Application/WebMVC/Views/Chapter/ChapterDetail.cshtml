@@ -1,0 +1,211 @@
+﻿@model ChapterViewModel
+
+@{
+}
+<style>
+    pre {
+        white-space: pre-wrap; /* Bật chế độ xuống dòng tự động */
+        word-wrap: break-word; /* Cho phép từ bị ngắt nếu quá dài */
+        overflow-wrap: break-word; /* Tương tự word-wrap */
+    }
+
+    .color-box {
+        width: 30px;
+        height: 30px;
+        border-radius: 5%;
+        cursor: pointer;
+        border: 2px solid #ccc;
+    }
+</style>
+<div class="chapter-wrapper container my-5">
+    <a href="#" class="text-decoration-none">
+        <h1 class="text-center text-success">@Model.Title</h1>
+    </a>
+
+    <hr class="chapter-start container-fluid">
+    <div class="chapter-nav text-center">
+        <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
+            @if (Model.PreviousChapterId != null)
+            {
+                <a class="btn btn-success chapter-prev"
+                   asp-action="ChapterDetail" asp-controller="Chapter" asp-route-chapterId="@Model.PreviousChapterId" asp-route-storyId="@Model.StoryId" title="">
+                    <span>
+                        &lt;&lt;
+
+                    </span>
+                </a>
+
+            }
+            <button type="button" class="btn btn-light m-2" data-bs-toggle="modal" data-bs-target="#fontSettingsModal">
+                <i class="bi bi-gear-fill"></i> <!-- Icon bánh răng -->
+            </button>
+
+            @if (Model.NextChapterId != null)
+            {
+
+                <a class="btn btn-success chapter-next" asp-action="ChapterDetail" asp-controller="Chapter" asp-route-chapterId="@Model.NextChapterId" asp-route-storyId="@Model.StoryId"
+                   title="">
+                    <span>
+                        &gt;&gt;
+                    </span>
+                </a>
+            }
+
+
+
+        </div>
+    </div>
+    <hr class="chapter-end container-fluid">
+
+
+    <!-- Modal chỉnh font, màu chữ và màu nền -->
+    <div class="modal fade" id="fontSettingsModal" tabindex="-1" aria-labelledby="fontSettingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fontSettingsModalLabel">Chỉnh Font, Màu Chữ và Màu Nền</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Chọn cỡ chữ -->
+                        <div class="col-md-12 mb-3">
+                            <label for="fontSize" class="form-label">Cỡ chữ:</label>
+                            <input type="number" id="fontSize" class="form-control" value="16" min="10" max="72" onchange="updateStyle()">
+                        </div>
+
+                        <!-- Chọn font chữ -->
+                        <div class="col-md-12 mb-3">
+                            <label for="fontFamily" class="form-label">Phông chữ:</label>
+                            <select id="fontFamily" class="form-select" onchange="updateStyle()">
+                                <option value="Avenir Next">Avenir Next</option>
+                                <option value="Bookerly">Bookerly</option>
+                                <option value="Segoe UI">Segoe UI</option>
+                                <option value="Literata">Literata</option>
+                                <option value="Baskerville">Baskerville</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Courier New">Courier New</option>
+                                <option value="Tahoma">Tahoma</option>
+                                <option value="Palatino Linotype">Palatino Linotype</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Verdana">Verdana</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Source Sans Pro">Source Sans Pro</option>
+                            </select>
+                        </div>
+
+                        <!-- Chọn màu chữ (input màu) -->
+                        <div class="col-md-12 mb-3">
+                            <label for="textColor" class="form-label">Màu chữ:</label>
+                            <input type="color" id="textColor" class="form-control" value="#000000" onchange="updateStyle()">
+                        </div>
+
+                        <!-- Chọn màu nền -->
+                        <div class="col-md-12 mb-3">
+                            <label for="backgroundColor" class="form-label">Màu nền:</label>
+                            <div id="backgroundColor" class="d-flex gap-2">
+                                <div class="color-box" style="background-color: #F8FAFC;" onclick="setBackgroundColor('#F8FAFC')"></div>
+                                <div class="color-box" style="background-color: #f4f4f4;" onclick="setBackgroundColor('#f4f4f4')"></div>
+                                <div class="color-box" style="background-color: #e9ebee;" onclick="setBackgroundColor('#e9ebee')"></div>
+                                <div class="color-box" style="background-color: #f5ebcd;" onclick="setBackgroundColor('#f5ebcd')"></div>
+                                <div class="color-box" style="background-color: #eae4d3;" onclick="setBackgroundColor('#eae4d3')"></div>
+                                <div class="color-box" style="background-color: #f2f2f2;" onclick="setBackgroundColor('#f2f2f2')"></div>
+                                <div class="color-box" style="background-color: #c2b49b;" onclick="setBackgroundColor('#c2b49b')"></div>
+                                <div class="color-box" style="background-color: #272729;" onclick="setBackgroundColor('#272729')"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="updateStyle()">Áp dụng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<pre id="content" class="border p-3 mt-3" >
+        @Model.Content
+</pre>
+
+
+    <div class="chapter-nav text-center">
+        <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
+            @if (Model.PreviousChapterId != null)
+            {
+                <a class="btn btn-success me-1 chapter-prev"
+                   asp-action="ChapterDetail" asp-controller="Chapter" asp-route-chapterId="@Model.PreviousChapterId" asp-route-storyId="@Model.StoryId" title="">
+                    <span>
+                        &lt;&lt;
+                        
+                    </span>
+                </a>
+
+            }
+
+            @if (Model.NextChapterId != null)
+            {
+
+                <a class="btn btn-success chapter-next" asp-action="ChapterDetail" asp-controller="Chapter" asp-route-chapterId="@Model.NextChapterId" asp-route-storyId="@Model.StoryId"
+                   title="">
+                    <span>
+                        &gt;&gt;
+                    </span>
+                </a>
+            }
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function updateStyle() {
+        const fontSize = document.getElementById('fontSize').value + 'px';
+        const fontFamily = document.getElementById('fontFamily').value;
+        const textColor = document.getElementById('textColor').value || '#000000'; // Get from input color if set
+        const backgroundColor = localStorage.getItem('backgroundColor') || '#ffffff'; // Get from localStorage if set
+
+        const contentElement = document.getElementById('content');
+        contentElement.style.fontSize = fontSize;
+        contentElement.style.fontFamily = fontFamily;
+        contentElement.style.color = textColor;
+        contentElement.style.backgroundColor = backgroundColor;
+
+        // Lưu trạng thái vào localStorage
+        localStorage.setItem('fontSize', fontSize);
+        localStorage.setItem('fontFamily', fontFamily);
+        localStorage.setItem('backgroundColor', backgroundColor);
+        localStorage.setItem('textColor', textColor);  // Lưu màu chữ vào localStorage
+    }
+
+    // Hàm thay đổi màu nền
+    function setBackgroundColor(color) {
+        const contentElement = document.getElementById('content');
+        contentElement.style.backgroundColor = color;
+
+        // Lưu màu nền vào localStorage
+        localStorage.setItem('backgroundColor', color);
+    }
+
+    // Khôi phục trạng thái từ localStorage
+    window.onload = function () {
+        const fontSize = localStorage.getItem('fontSize') || '16px';
+        const fontFamily = localStorage.getItem('fontFamily') || 'monospace';
+        const textColor = localStorage.getItem('textColor') || '#000000';
+        const backgroundColor = localStorage.getItem('backgroundColor') || '#f2f2f2';
+
+        document.getElementById('fontSize').value = parseInt(fontSize, 10);
+        document.getElementById('fontFamily').value = fontFamily;
+        document.getElementById('backgroundColor').value = backgroundColor;
+        document.getElementById('textColor').value = textColor;
+
+        const contentElement = document.getElementById('content');
+        contentElement.style.fontSize = fontSize;
+        contentElement.style.fontFamily = fontFamily;
+        contentElement.style.color = textColor;
+        contentElement.style.backgroundColor = backgroundColor;
+    };
+</script>
