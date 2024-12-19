@@ -33,7 +33,7 @@ window.loadingFullPage = function () {
 
 window.objConfigFont = [
     {
-        name: 'roboto', 
+        name: 'roboto',
         value: "'Roboto Condensed', sans-serif",
     },
     {
@@ -226,9 +226,9 @@ $(document).ready(function () {
             }
 
         }, 50000);
-    }  
+    }
 
-    
+
 })
 
 
@@ -269,7 +269,7 @@ $(document).ready(function () {
         }
     });
 
-    
+
 });
 
 $(document).ready(function () {
@@ -388,6 +388,33 @@ $(document).ready(function () {
     // Nếu bạn có các phần tử thể loại đã có sẵn, có thể gọi updateSelectedGenres ở đây để hiển thị chúng
     updateSelectedGenres();
 });
+
+// Toggle the visibility of message box when the bell icon is clicked
+$("#bellButton").click(function () {
+    $("#messageBox").toggleClass("d-none");
+});
+
+// Handle sending message (you can replace with real functionality)
+$("#sendMessageButton").click(function () {
+    // Lấy giá trị của group (room) và thông điệp
+    var roomName = document.getElementById("messageSelect").value;
+    var message = document.getElementById("messageInput").value;
+
+    // Kiểm tra nếu người dùng chọn group và nhập thông điệp
+    if (roomName && message) {
+        // Gửi thông điệp đến SignalR Hub
+        connection.invoke("SendMessageToRoom", roomName, message)
+            .then(function () {
+                console.log("Message sent to room:", roomName);
+            })
+            .catch(function (err) {
+                console.error("Error sending message:", err);
+            });
+    } else {
+        alert("Vui lòng chọn nhóm và nhập thông báo.");
+    }
+});
+
 
 
 

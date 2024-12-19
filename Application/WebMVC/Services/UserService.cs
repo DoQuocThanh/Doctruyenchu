@@ -32,7 +32,7 @@ namespace WebMVC.Services
                 throw new UnauthorizedAccessException("Email hoặc mật khẩu không đúng");
             }
 
-            string token = _generateJwtToken.GenerateJwtTokenUser(user.Id.ToString(), user.Username, user.Email);
+            string token = _generateJwtToken.GenerateJwtTokenUser(user.Id.ToString(), user.Username, user.Email, user.Role);
 
 
             return token;

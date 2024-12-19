@@ -1,15 +1,19 @@
 ﻿using ApplicationCore.Interfaces;
 using ApplicationInfrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using WebMVC.ChatHub;
 using WebMVC.Common;
 using WebMVC.Interfaces;
 using WebMVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+//Add service SignalR
+builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -97,6 +101,10 @@ app.UseRouting();
 
 app.UseAuthentication(); // Xác thực JWT
 app.UseAuthorization();  // Ủy quyền dựa trên roles/policies
+
+// Map hub
+app.MapHub<ChatHub>("/myhub");
+
 
 app.MapControllerRoute(
     name: "default",

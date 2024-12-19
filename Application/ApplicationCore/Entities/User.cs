@@ -16,7 +16,7 @@ namespace ApplicationCore.Entities
         public string PasswordHash { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-
+        public string? Role { get; set; }
         public ICollection<Story> Stories { get; set; }
         public ICollection<Comment> Comments { get; set; }
     }

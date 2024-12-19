@@ -14,7 +14,7 @@ namespace WebMVC.Common
             _configuration = configuration;
         }
 
-        public string GenerateJwtTokenUser(string userId, string username, string email)
+        public string GenerateJwtTokenUser(string userId, string username, string email, string role)
         {
             // Lấy thông tin từ appsettings.json
             var secretKey = _configuration["JwtSettings:SecretKey"];
@@ -28,6 +28,7 @@ namespace WebMVC.Common
             new Claim(ClaimTypes.NameIdentifier, userId),
             new Claim(ClaimTypes.Name, username),
             new Claim(ClaimTypes.Email, email),
+            new Claim(ClaimTypes.Role, role),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // JWT ID, unique ID
         };
 
