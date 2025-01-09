@@ -30,16 +30,25 @@ builder.Services.AddScoped<IChapterService, ChapterService>();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 // Get the connection string from appsettings.json
-var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
+// database local
+//var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
+//Db setting
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+var dbPass = Environment.GetEnvironmentVariable("DB_PASS");
+var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+var connectionString = $"Server={dbHost};Database={dbName};User={dbUser};Password={dbPass};";
 
 // Add DbContext for MySQL
 builder.Services.AddDbContext<DBContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-// Setting Authentication
+// Setting Authentication 
 
 // Lấy cấu hình từ appsettings.json
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+
+
 
 // Đọc giá trị từ cấu hình
 var secretKey = jwtSettings["SecretKey"];
@@ -92,13 +101,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthentication(); // Xác thực JWT
 app.UseAuthorization();  // Ủy quyền dựa trên roles/policies
 

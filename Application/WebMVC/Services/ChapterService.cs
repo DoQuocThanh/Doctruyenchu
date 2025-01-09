@@ -22,6 +22,7 @@ namespace WebMVC.Services
                 var chapterSpec = new ChapterWithItemsSpecification(storyId);
                 var listChapterStory = await _chapterRepository.ListAsync(chapterSpec);
                 var chapter = listChapterStory.FirstOrDefault(x => x.Id == chapterId);
+
                 if (chapter == null)
                 {
                     throw new KeyNotFoundException("Chapter not found");
@@ -32,9 +33,8 @@ namespace WebMVC.Services
                 if (currentIndex == null) throw new KeyNotFoundException("Chapter not found");
 
                 var previousChapter = currentIndex > 0 ? listChapterStory[currentIndex - 1] : null;
+
                 var nextChapter = currentIndex < listChapterStory.Count - 1 ? listChapterStory[currentIndex + 1] : null;
-
-
 
                 // Map sang ViewModel
                 return new ChapterViewModel
